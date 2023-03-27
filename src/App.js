@@ -1,25 +1,91 @@
-import logo from './logo.svg';
+import {
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UploadOutlined,
+  UserOutlined,
+  VideoCameraOutlined,
+} from '@ant-design/icons';
+import { Layout, Menu, theme, Breadcrumb } from 'antd';
+import React, { useState } from 'react';
 import './App.css';
+import EgTable from './EgTable.js';
 
-function App() {
+
+const { Header, Sider, Content } = Layout;
+const App = () => {
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Layout>
+      <Sider trigger={null} collapsible collapsed={collapsed}>
+        <div className="logo" />
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['1']}
+          items={[
+            {
+              key: '1',
+              icon: <UserOutlined />,
+              label: 'nav 1',
+            },
+            {
+              key: '2',
+              icon: <VideoCameraOutlined />,
+              label: 'nav 2',
+            },
+            {
+              key: '3',
+              icon: <UploadOutlined />,
+              label: 'nav 3',
+            },
+          ]}
+        />
+      </Sider>
+      <Layout className="site-layout">
+        <Header
+          style={{
+            padding: 0,
+            background: colorBgContainer,
+          }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            className: 'trigger',
+            onClick: () => setCollapsed(!collapsed),
+          })}
+        </Header>
+        <Content
+          style={{
+            margin: '24px 16px',
+            padding: 24,
+            height: '1000px',
+            background: colorBgContainer,
+          }}
+        >
+          Content
+          <Breadcrumb
+            items={[
+              {
+                title: 'Home',
+              },
+              {
+                title: <a href="">Application Center</a>,
+              },
+              {
+                title: <a href="">Application List</a>,
+              },
+              {
+                title: 'An Application',
+              },
+            ]}
+          />
 
+          <EgTable />
+        </Content>
+      </Layout>
+    </Layout>
+  );
+};
 export default App;
